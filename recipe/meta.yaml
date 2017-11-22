@@ -1,5 +1,5 @@
-{% set version = "5.2.0" %}
-{% set sha256 = "7427d4b63861c1896865ea7be078fa1e2b219ce9b1a9a0895f823475a5f76c85" %}
+{% set version = "5.3.1" %}
+{% set sha256 = "670ade9410b7132278209e6a2e893caf098b040c4ba4d5ea848367a9c5588728" %}
 
 package:
     name: testfixtures
