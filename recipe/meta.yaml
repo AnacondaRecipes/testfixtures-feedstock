@@ -16,6 +16,7 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
   run:
     - python
 
@@ -24,6 +25,10 @@ test:
     - testfixtures
     - testfixtures.tests
     - testfixtures.tests.test_django
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
   home: https://testfixtures.readthedocs.io
