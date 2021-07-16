@@ -17,6 +17,7 @@ requirements:
     - python
     - pip
     - setuptools
+    - wheel
   run:
     - python
 
@@ -33,6 +34,7 @@ test:
 about:
   home: https://testfixtures.readthedocs.io
   license: MIT
+  license_family: MIT
   license_file: LICENSE.txt
   summary: A collection of helpers and mock objects for unit tests and doc tests.
   doc_url: https://testfixtures.readthedocs.io
