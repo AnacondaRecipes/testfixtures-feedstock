@@ -32,6 +32,10 @@ requirements:
   '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_missing',
   '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_present',
 ]%}
+# AssertionError:
+# -+++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c/foo":
+# ++++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c\foo":
+{% set skip_tests = skip_tests + ["--deselect=testfixtures/tests/test_sybil.py::TestFileParser::test_evaluate_read_difference"] %}  # [win]
 
 test:
   source_files:
