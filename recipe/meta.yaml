@@ -56,8 +56,6 @@ test:
     - tests
   imports:
     - testfixtures
-    - testfixtures.tests
-    - testfixtures.tests.test_django
   requires:
     - pip
     - sybil >=6.0.3
