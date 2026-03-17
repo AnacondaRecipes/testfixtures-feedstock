@@ -1,27 +1,41 @@
 {% set name = "testfixtures" %}
-{% set version = "9.1.0" %}
+{% set version = "11.0.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 517e9cf353942723533ae1100ca45dd27fe0785c3ad2765075f5cb1cbce01482
+  sha256: 06dfeb3792e06c4ea7217e14114391f6c7735c36e0a57e6f4641c6ae5d790ee7
 
 build:
-  skip: true # [py<311]
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true # [py<311]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling
   run:
     - python
+  run_constrained:
+    # django
+    - django >=4  # [py<313]
+    - django >=5.1.3  # [py>=313]
+    # sybil
+    - sybil >=6.0.3
+    # mock-backport
+    - mock >=4.0.3
+    # twisted
+    - twisted >=22.1
+    # yaml
+    - pyyaml >=6.0.3
+    # toml
+    - tomlkit >=0.10.0
+    
 
 # django package in not available now, skip tests for it
 # 
@@ -46,9 +60,9 @@ test:
     - testfixtures.tests.test_django
   requires:
     - pip
-    - sybil
-    - twisted
-    - pytest>=7.1
+    - sybil >=6.0.3
+    - twisted >=22.1
+    - pytest >=8.0
   commands:
     - pip check
     - pytest -v testfixtures/tests {{ skip_tests | join(' ')}}
