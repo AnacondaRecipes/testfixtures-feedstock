@@ -42,18 +42,18 @@ requirements:
 # AssertionError: Expected AssertionError('\n<SequenceComparison(ordered=True, partial=False)(failed)>\nsame:\n[]\n\nexpected:
 # \n[<C:builtins.DeprecationWarning>]\n\nactual:\n[]\n</SequenceComparison(ordered=True, partial=False)> (expected) != [] (actual)'), None raised!
 {% set skip_tests = [
-  "--ignore=testfixtures/tests/test_django", 
-  '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_missing',
-  '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_present',
+  "--ignore=tests/test_django",
+  '--deselect=tests/test_shouldwarn.py::ShouldWarnTests::test_filter_missing',
+  '--deselect=tests/test_shouldwarn.py::ShouldWarnTests::test_filter_present',
 ]%}
 # AssertionError:
 # -+++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c/foo":
 # ++++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c\foo":
-{% set skip_tests = skip_tests + ["--deselect=testfixtures/tests/test_sybil.py::TestFileParser::test_evaluate_read_difference"] %}  # [win]
+{% set skip_tests = skip_tests + ["--deselect=tests/test_sybil.py::TestFileParser::test_evaluate_read_difference"] %}  # [win]
 
 test:
   source_files:
-    - testfixtures
+    - tests
   imports:
     - testfixtures
     - testfixtures.tests
@@ -65,7 +65,7 @@ test:
     - pytest >=8.0
   commands:
     - pip check
-    - pytest -v testfixtures/tests {{ skip_tests | join(' ')}}
+    - pytest -v tests {{ skip_tests | join(' ')}}
 
 about:
   home: https://testfixtures.readthedocs.io
