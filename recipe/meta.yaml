@@ -1,57 +1,71 @@
 {% set name = "testfixtures" %}
-{% set version = "9.1.0" %}
+{% set version = "11.0.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 517e9cf353942723533ae1100ca45dd27fe0785c3ad2765075f5cb1cbce01482
+  sha256: 06dfeb3792e06c4ea7217e14114391f6c7735c36e0a57e6f4641c6ae5d790ee7
 
 build:
-  skip: true # [py<311]
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true # [py<311]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling
   run:
     - python
+  run_constrained:
+    # django
+    - django >=4  # [py<313]
+    - django >=5.1.3  # [py>=313]
+    # sybil
+    - sybil >=6.0.3
+    # mock-backport
+    - mock >=4.0.3
+    # twisted
+    - twisted >=22.1
+    # yaml
+    - pyyaml >=6.0.3
+    # toml
+    - tomlkit >=0.10.0
+    
 
 # django package in not available now, skip tests for it
 # 
 # AssertionError: Expected AssertionError('\n<SequenceComparison(ordered=True, partial=False)(failed)>\nsame:\n[]\n\nexpected:
 # \n[<C:builtins.DeprecationWarning>]\n\nactual:\n[]\n</SequenceComparison(ordered=True, partial=False)> (expected) != [] (actual)'), None raised!
 {% set skip_tests = [
-  "--ignore=testfixtures/tests/test_django", 
-  '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_missing',
-  '--deselect=testfixtures/tests/test_shouldwarn.py::ShouldWarnTests::test_filter_present',
+  "--ignore=tests/test_django",
+  '--deselect=tests/test_shouldwarn.py::ShouldWarnTests::test_filter_missing',
+  '--deselect=tests/test_shouldwarn.py::ShouldWarnTests::test_filter_present',
 ]%}
 # AssertionError:
 # -+++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c/foo":
 # ++++ Reading from "C:\Users\TA9AC1~1\AppData\Local\Temp\tmpblvwk_5c\foo":
-{% set skip_tests = skip_tests + ["--deselect=testfixtures/tests/test_sybil.py::TestFileParser::test_evaluate_read_difference"] %}  # [win]
+{% set skip_tests = skip_tests + ["--deselect=tests/test_sybil.py::TestFileParser::test_evaluate_read_difference"] %}  # [win]
+# FileNotFoundError(2, 'No such file or directory') -> pytest-0/test_clone_nonexistent_source_1
+{% set skip_tests = skip_tests + ["--deselect=tests/test_tempdirectory.py::TestClone::test_clone_nonexistent_source_raises"] %}  # [win]
 
 test:
   source_files:
-    - testfixtures
+    - tests
   imports:
     - testfixtures
-    - testfixtures.tests
-    - testfixtures.tests.test_django
   requires:
     - pip
-    - sybil
-    - twisted
-    - pytest>=7.1
+    - sybil >=6.0.3
+    - twisted >=22.1
+    - pytest >=8.0
   commands:
     - pip check
-    - pytest -v testfixtures/tests {{ skip_tests | join(' ')}}
+    - pytest -v tests {{ skip_tests | join(' ')}}
 
 about:
   home: https://testfixtures.readthedocs.io
